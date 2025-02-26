@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Blackjack_Dealer.classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,9 +15,12 @@ namespace Blackjack_Dealer
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new Form1());
+
+            Shoe shoe = new Shoe();
+            Console.WriteLine(shoe);
         }
     }
 }

@@ -43,7 +43,7 @@ namespace Blackjack_Dealer.classes
     {
         Suits suit;
         Ranks rank;
-        Orientation orientation = Orientation.UP;
+        Orientation orientation = Orientation.DOWN;
         private int value;
         Image img;
 

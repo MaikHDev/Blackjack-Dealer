@@ -8,7 +8,7 @@ namespace Blackjack_Dealer.classes
 {
     abstract class CardHolder
     {
-        protected CardHolder() 
+        public CardHolder() 
         {
 
         }

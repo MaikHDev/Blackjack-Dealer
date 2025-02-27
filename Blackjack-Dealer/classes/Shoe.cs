@@ -27,8 +27,6 @@ namespace Blackjack_Dealer.classes
             {
                 _shoe.AddRange(new Deck().GetCards());
             }
-
-            _shoe[414].Orientation = Orientation.DOWN;
         }
         public void Shuffle()
         {
@@ -40,19 +38,19 @@ namespace Blackjack_Dealer.classes
             }
         }
 
-        //public override string ToString()
-        //{
-        //    string result = "";
+        public override string ToString()
+        {
+            string result = "";
 
-        //    foreach (Card card in _shoe)
-        //    {
-        //        result += card.ToString();
-        //        result += "\n";
-        //    }
-        //    int count = _shoe.Count();
-        //    result += "Amount of cards in shoe: " + count.ToString();
+            foreach (Card card in _shoe)
+            {
+                result += card.ToString();
+                result += "\n";
+            }
+            int count = _shoe.Count();
+            result += "Amount of cards in shoe: " + count.ToString();
 
-        //    return result;
-        //}
+            return result;
+        }
     }
 }

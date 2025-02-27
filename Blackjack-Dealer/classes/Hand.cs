@@ -11,10 +11,11 @@ namespace Blackjack_Dealer.classes
         List<Card> _cards = new List<Card>();
 
         public List<Card> Cards { get { return Cards; } }
+        public bool hasStood { get; private set; } = false;
 
-        public void AddCard(Card card)
+        public void standHand()
         {
-            _cards.Add(card);
+            hasStood = true;
         }
     }
 }

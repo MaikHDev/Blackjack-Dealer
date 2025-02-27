@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace Blackjack_Dealer.classes
 {
-    internal class Player
+    internal class Dealer : CardHolder
     {
+        public Dealer(string name) : base(name)
+        {
+        
+        }
+
+        public void DealCard()
+        {
+
+        }
     }
 }

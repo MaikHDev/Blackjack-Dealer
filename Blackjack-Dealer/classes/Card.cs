@@ -73,12 +73,12 @@ namespace Blackjack_Dealer.classes
             }
         }
 
-        public string toUpperCase(string item)
+        public string ToUpperCase(string item)
         {
             item = char.ToUpper(item[0]) + item.Substring(1).ToLower();
             return item;
         }
-        public string toUpperCase(Enum item)
+        public string ToUpperCase(Enum item)
         {
             string upper = item.ToString();
             upper = char.ToUpper(upper[0]) + upper.Substring(1).ToLower();
@@ -87,7 +87,7 @@ namespace Blackjack_Dealer.classes
 
         public override string ToString()
         {
-            return orientation == Orientation.UP ? toUpperCase(this.rank) + " of " + toUpperCase(this.suit) : "Card is faced down!";
+            return orientation == Orientation.UP ? ToUpperCase(this.rank) + " of " + ToUpperCase(this.suit) : "Card is faced down!";
         }
     }
 

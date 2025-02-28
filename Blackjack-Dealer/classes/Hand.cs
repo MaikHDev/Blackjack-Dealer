@@ -17,5 +17,10 @@ namespace Blackjack_Dealer.classes
         {
             hasStood = true;
         }
+
+        public void AddCardToHand(Card card)
+        {
+            _cards.Add(card);
+        }
     }
 }

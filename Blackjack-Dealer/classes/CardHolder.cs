@@ -8,35 +8,29 @@ namespace Blackjack_Dealer.classes
 {
     abstract class CardHolder
     {
-        protected List<Hand> hands = new List<Hand>();
-            
-        public List<Hand> Hands { get { return hands; } }
-
+        public List<Hand> Hands { get; private set; } = new List<Hand>();
+        
         public event EventHandler<HandEventHandler> HandHit;
         public event EventHandler<HandEventHandler> HandStand;
         
         public readonly string Name;
-        private bool isDealer = false;
 
         public CardHolder(string name)
         {
             this.Name = name;
 
-            //if (this is Dealer)
-            //{
-            //    isDealer = true;
-            //}
-
-            hands.Add(new Hand());
+            Hands.Add(new Hand());
         }
 
         private void OnHandHit()
         {
-            HandHit?.Invoke(this, new HandEventHandler(Name, hands[0]));
+            // temp hand index
+            HandHit?.Invoke(this, new HandEventHandler(Name, Hands[0]));
         }
         private void OnHandStand()
         {
-            HandStand?.Invoke(this, new HandEventHandler(Name, hands[0]));
+            // temp hand index
+            HandStand?.Invoke(this, new HandEventHandler(Name, Hands[0]));
         }
 
         public void Hit()
@@ -47,6 +41,11 @@ namespace Blackjack_Dealer.classes
         {
             OnHandStand();
         }
+
+        public void WipeHands()
+        {
+            Hands.Clear();
+        }
     }
 
     internal class HandEventHandler : EventArgs
@@ -56,7 +55,7 @@ namespace Blackjack_Dealer.classes
             this.Name = name;
             this.Hand = hand;
         }
-        public Hand Hand { get; }
+        public readonly Hand Hand;
         public readonly string Name;
     }
 

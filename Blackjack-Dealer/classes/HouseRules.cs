@@ -40,7 +40,7 @@ namespace Blackjack_Dealer.classes
 
         private HouseRules(int playerAmount, int maxHandSize, int minBet, int shoeSize, bool standOnSoft)
         {
-            PlayerAmount = (playerAmount <= 0) ? PlayerAmount : playerAmount;
+            PlayerAmount = (playerAmount <= 0 || playerAmount > MaxPlayerAmount) ? PlayerAmount : playerAmount;
             MaxHandSize = (maxHandSize <= 0) ? MaxHandSize : maxHandSize;
             MinBet = (minBet <= 0) ? MinBet : minBet;
             ShoeSize = (shoeSize <= 0) ? ShoeSize : shoeSize;

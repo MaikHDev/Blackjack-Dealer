@@ -10,7 +10,7 @@ namespace Blackjack_Dealer.classes
     {
         List<Card> _cards = new List<Card>();
 
-        public List<Card> Cards { get { return Cards; } }
+        public List<Card> Cards { get { return _cards; } }
         public bool hasStood { get; private set; } = false;
 
         public void standHand()

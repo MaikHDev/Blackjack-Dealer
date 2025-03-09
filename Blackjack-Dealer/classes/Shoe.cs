@@ -9,15 +9,11 @@ namespace Blackjack_Dealer.classes
 {
     internal class Shoe
     {
-        public List<Card> shoe { get; private set; } = new List<Card>(amountOfCards);
-
-        // Set amount of cards/decks in the shoe
-        private const int amountOfDecks = 8;
-        private const int amountOfCards = amountOfDecks * 52;
+        public List<Card> shoe { get; private set; } = new List<Card>();
 
         public Shoe() 
         {
-            for(int i = 0; i < amountOfDecks; i++)
+            for(int i = 0; i < HouseRules.GetInstance().ShoeSize; i++)
             {
                 shoe.AddRange(new Deck().GetCards());
             }

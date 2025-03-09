@@ -16,6 +16,7 @@ namespace Blackjack_Dealer.classes
 
         private readonly Random _random = new Random();
 
+        public Hand Hand { get; set; }
 
         public static Dealer GetInstance(string name)
         {
@@ -42,27 +43,42 @@ namespace Blackjack_Dealer.classes
             }
         }
 
-        public void DealCard(Shoe Shoe, Hand hand)
+        public void DealCard(Shoe Shoe, Hand hand, Orientation orientation)
         {
             var card = Shoe.shoe[0];
             Shoe.shoe.RemoveAt(0);
+            card.Orientation = orientation;
             hand.AddCardToHand(card);
         }
 
-        public void PayoutPlayer(Player player, double playerBet)
+        public void ClearHands(List<Player> players)
         {
-            for (int i = 0; i < player.Hands.Count; i++)
+            Hand = new Hand();
+            foreach (var player in players)
             {
-                var cards = player.Hands[i].Cards;
-                if (cards.Count == 2 && (cards[0].Value + cards[1].Value) == 21)
-                {
-                    player.AddChips(playerBet * 2.5);
-                }
-                else
-                {
-                    player.AddChips(playerBet * 2);
-                }
+                player.Hands.Clear();
             }
+        }
+        public void ClearHands(Player player)
+        {
+            Hand = new Hand();
+            player.Hands.Clear();
+        }
+
+        public void PayoutPlayer(Player player)
+        {
+            player.Hands.ForEach(hand =>
+            {
+                var cards = hand.Cards;
+                if (cards.Count == 2 && (cards[0].Value + cards[1].Value) == 21) // Has blackjack
+                {
+                    player.AddChips(player.Bet * 2.5);
+                }
+                else // Just won the hand
+                {
+                    player.AddChips(player.Bet * 2);
+                }
+            });
         }
     }
 }

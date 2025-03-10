@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
@@ -27,13 +28,15 @@ namespace Blackjack_Dealer
             dealer.Hand = new Hand();
 
             List<Player> players = new List<Player>(rules.MaxPlayerAmount);
+            Shoe shoe = new Shoe();
 
             for (int i = 0; i < rules.PlayerAmount; i++)
             {
                 players.Add(new Player($"Player{i + 1}"));
                 players[i].Hands.Add(new Hand()); // For testing!
+                players[i].HandHit += DealerDealCard;
+                players[i].HandSplit += DealerSplitPlayerHand;
             }
-            Shoe shoe = new Shoe();
 
             dealer.ShuffleShoe(shoe);
 
@@ -61,6 +64,21 @@ namespace Blackjack_Dealer
                     Console.WriteLine($"{dealer.Name}'s hand: ");
                     Console.WriteLine(string.Join(", ", dealer.Hand.Cards));
                 }
+            }
+            
+            players[0].Hit(players[0].Hands[0]);
+            dealer.ClearHand(players[0].Hands, players[0].Hands[0]);
+
+            void DealerDealCard(object sender, HandEventHandler e)
+            {
+                Console.WriteLine(e.Name);
+                Console.WriteLine(string.Join(", ", e.Hand.Cards));
+                dealer.DealCard(shoe, e.Hand, classes.Orientation.UP);
+                Console.WriteLine(string.Join(", ", e.Hand.Cards));
+            }
+            void DealerSplitPlayerHand(object sender, HandEventHandler e)
+            {
+                dealer.SplitHand(shoe, e.Hands, e.Hand);
             }
         }
     }

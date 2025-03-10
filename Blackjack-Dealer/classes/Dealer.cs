@@ -43,7 +43,7 @@ namespace Blackjack_Dealer.classes
             }
         }
 
-        public void DealCard(Shoe Shoe, Hand hand, Orientation orientation)
+        public void DealCard(Shoe Shoe, Hand hand, Orientation orientation = Orientation.UP)
         {
             var card = Shoe.shoe[0];
             Shoe.shoe.RemoveAt(0);
@@ -51,18 +51,34 @@ namespace Blackjack_Dealer.classes
             hand.AddCardToHand(card);
         }
 
-        public void ClearHands(List<Player> players)
+        public void ClearHands(List<List<Hand>> allPlayerHands)
         {
             Hand = new Hand();
-            foreach (var player in players)
+            foreach (var playerHands in allPlayerHands)
             {
-                player.Hands.Clear();
+                playerHands.Clear();
             }
         }
-        public void ClearHands(Player player)
+        public void ClearHand(List<Hand> hands, Hand hand)
         {
             Hand = new Hand();
-            player.Hands.Clear();
+            hands.Remove(hand);
+        }
+
+        public void SplitHand(Shoe shoe, List<Hand> hands, Hand hand)
+        {
+            if (hand.Cards.Count == 2 && (hand.Cards[0].Value == hand.Cards[1].Value))
+            {
+                hands.Remove(hand);
+
+                var newHands = new List<Hand>
+                {
+                    new Hand { Cards = { hand.Cards[0] } },
+                    new Hand { Cards = { hand.Cards[1] } }
+                };
+
+                hands.AddRange(newHands);
+            }
         }
 
         public void PayoutPlayer(Player player)
@@ -72,11 +88,11 @@ namespace Blackjack_Dealer.classes
                 var cards = hand.Cards;
                 if (cards.Count == 2 && (cards[0].Value + cards[1].Value) == 21) // Has blackjack
                 {
-                    player.AddChips(player.Bet * 2.5);
+                    player.AddChips((int)(hand.Bet * 2.5));
                 }
                 else // Just won the hand
                 {
-                    player.AddChips(player.Bet * 2);
+                    player.AddChips(hand.Bet * 2);
                 }
             });
         }

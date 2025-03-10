@@ -44,13 +44,12 @@ namespace Blackjack_Dealer.classes
         Suits suit;
         Ranks rank;
         Orientation orientation = Orientation.DOWN;
-        private int value;
+        public int Value { get; private set; }
         Image img;
 
         public Suits Suit { get { return suit; } }
         public Ranks Rank { get { return rank; } }
         public Orientation Orientation { get { return orientation; } set { orientation = value; } }
-        public int Value { get {  return value; } }
 
 
         public Card(Ranks rank, Suits suit)
@@ -62,13 +61,13 @@ namespace Blackjack_Dealer.classes
                 case Ranks.JACK:
                 case Ranks.QUEEN:
                 case Ranks.KING:
-                    this.value = 10;
+                    this.Value = 10;
                     break;
                 case Ranks.ACE:
-                    this.value = 11;
+                    this.Value = 11;
                     break;
                 default:
-                    this.value = (int)rank;
+                    this.Value = (int)rank;
                     break;
             }
         }

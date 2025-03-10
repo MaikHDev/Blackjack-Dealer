@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace Blackjack_Dealer.classes
 {
@@ -10,53 +11,74 @@ namespace Blackjack_Dealer.classes
     {
         public List<Hand> Hands { get; private set; } = new List<Hand>();
 
-        public double Chips { get; private set; } = 1000;
+        public int Chips { get; private set; } = 1000;
 
-        public double Bet { get; private set; } = 0;
-
-        public void AddChips(double chips)
+        public void AddChips(int chips)
         {
             Chips += chips;
         }
 
         public event EventHandler<HandEventHandler> HandHit;
-        public event EventHandler<HandEventHandler> HandStand;
+        public event EventHandler<HandEventHandler> HandSplit;
 
-        public double PlaceBet(double chips)
+        public bool PlaceBet(int bet)
         {
-            if (chips > Chips)
+            if (bet > Chips)
             {
-               Console.WriteLine("Can't bet more chips than you currently have.");
+                Console.WriteLine("Can't bet more chips than you currently have.");
+                return false;
             }
 
-            if (chips <= 0 )
+            if (bet < HouseRules.GetInstance().MinBet)
             {
                 Console.WriteLine("Can't bet zero or less chips.");
+                return false;
             }
 
-            Bet = chips;
-            Chips -= chips;
-            return Bet;
+            if (bet % 10 != 0)
+            {
+                Console.WriteLine("Bets must be in increments of 10.");
+                return false;
+            }
+
+            Chips -= bet;
+            var hand = new Hand
+            {
+                Bet = bet
+            };
+            Hands.Add(hand);
+
+            return true;
         }
 
-        private void OnHandHit(int handIndex)
+        private void OnHandHit(Hand hand)
         {
-            // temp hand index
-            HandHit?.Invoke(this, new HandEventHandler(Name, Hands[handIndex]));
+            HandHit?.Invoke(this, new HandEventHandler(Name, hand));
         }
-        private void OnHandStand(int handIndex)
+        public void Hit(Hand hand)
         {
-            // temp hand index
-            HandStand?.Invoke(this, new HandEventHandler(Name, Hands[handIndex]));
+            OnHandHit(hand);
         }
 
-        public void Hit(int handIndex)
+        private void OnHandSplit(List<Hand> hands, Hand hand)
         {
-            OnHandHit(handIndex);
+            HandHit?.Invoke(this, new HandEventHandler(hands, hand));
         }
-        public void Stand(int handIndex)
+        public void Split(List<Hand> hands, Hand hand)
         {
-            OnHandStand(handIndex);
+            OnHandSplit(hands, hand);
+        }
+
+        public void Stand(Hand hand)
+        {
+            hand.StandHand();
+        }
+        public void DoubleDown(Hand hand)
+        {
+            if (hand.DoubleDown())
+            {
+                Hit(hand);
+            }
         }
 
         public Player(string name) : base(name)
@@ -70,7 +92,14 @@ namespace Blackjack_Dealer.classes
             this.Name = name;
             this.Hand = hand;
         }
+
+        public HandEventHandler(List<Hand> hands, Hand hand)
+        {
+            this.Hands = hands;
+            this.Hand = hand;
+        }
         public readonly Hand Hand;
+        public readonly List<Hand> Hands;
         public readonly string Name;
     }
 }

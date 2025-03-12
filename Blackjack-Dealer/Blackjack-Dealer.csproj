@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{3465B107-C538-4286-90AE-2709AA4D52CA}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>Blackjack_Dealer</RootNamespace>
     <AssemblyName>Blackjack-Dealer</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>

@@ -33,7 +33,10 @@ namespace Blackjack_Dealer
             for (int i = 0; i < rules.PlayerAmount; i++)
             {
                 players.Add(new Player($"Player{i + 1}"));
-                players[i].Hands.Add(new Hand()); // For testing!
+                if (!players[i].PlaceBet(rules.MinBet)) // For testing!
+                {
+                    continue;
+                }
                 players[i].HandHit += PlayerHitHand;
                 players[i].HandSplit += PlayerSplitHand;
                 players[i].HandSurrender += PlayerSurrenderHand;
@@ -55,7 +58,7 @@ namespace Blackjack_Dealer
                         if (i == 1)
                         {
                             Console.Write($"{player.Name}'s hand(s): ");
-                            Console.WriteLine(string.Join(", ", hand.Cards));
+                            Console.WriteLine(string.Join(", ", hand.Cards) + $" {hand.Cards.Sum(card => card.Value)}");
                         }
                     });
                 });
@@ -66,17 +69,47 @@ namespace Blackjack_Dealer
                     Console.WriteLine(string.Join(", ", dealer.Hand.Cards));
                 }
             }
-            while (players[0].Hands[0].Cards.Sum(card => card.Value) < 21 && players[0].Hands[0].HasStood == false)
+
+            bool skip = false;
+
+            if (players[0].Hands[0].Cards.Count == 2 && (players[0].Hands[0].Cards[0].Value + players[0].Hands[0].Cards[1].Value) == 21)
             {
-                players[0].Hit(players[0].Hands[0]);
+                dealer.PayoutPlayerBlackjack(players[0], players[0].Hands[0]);
             }
+            else
+            {
+                while (players[0].Hands[0].HasStood == false && skip == false)
+                {
+                    if (players[0].Hands[0].Cards.Sum(card => card.Value) > 21)
+                    {
+                        Console.WriteLine("Player busted!");
+                        dealer.ClearHand(players[0].Hands, players[0].Hands[0]);
+                        skip = true;
+                    }
+                    else
+                    {
+                        string input = Console.ReadLine();
+
+                        if (input == "hit")
+                        {
+                            players[0].Hit(players[0].Hands[0]);
+                        }
+                        else if (input == "stand")
+                        {
+                            players[0].Stand(players[0].Hands[0]);
+                            dealer.PayoutPlayer(players[0]);
+                        }
+                    }
+                }
+            }
+            Console.WriteLine($"Player chip amount: {players[0].Chips}");
             //if (players[0].Hands[0].Cards[0].Value == players[0].Hands[0].Cards[1].Value)
             //{
             //    Console.WriteLine("player has split!");
             //    players[0].Split(players[0].Hands, players[0].Hands[0]);
             //}
             //else
-            //{
+            //{0
             //    players[0].Hit(players[0].Hands[0]);
             //}
 
@@ -84,7 +117,6 @@ namespace Blackjack_Dealer
             {
                 Console.WriteLine($"Player {e.Name} has hit!");
 
-                Console.WriteLine(string.Join(", ", e.Hand.Cards) + $" {e.Hand.Cards.Sum(card => card.Value)}");
                 dealer.DealCard(shoe, e.Hand, classes.Orientation.UP);
                 Console.WriteLine(string.Join(", ", e.Hand.Cards) + $" {e.Hand.Cards.Sum(card => card.Value)}");
             }
@@ -99,6 +131,11 @@ namespace Blackjack_Dealer
             }
             void PlayerSurrenderHand(object sender, HandEventHandler e)
             {
+                if (e.Hand.Cards.Count != 2)
+                {
+                    return;
+                }
+
                 int bet = e.Hand.Bet;
                 e.Hands.Remove(e.Hand);
                 e.Player.AddChips(bet / 2);

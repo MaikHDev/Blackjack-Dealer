@@ -89,14 +89,8 @@ namespace Blackjack_Dealer.classes
             player.Hands.ForEach(hand =>
             {
                 var cards = hand.Cards;
-                if (cards.Count == 2 && (cards[0].Value + cards[1].Value) == 21) // Has blackjack
-                {
-                    player.AddChips((int)(hand.Bet * 2.5));
-                }
-                else // Just won the hand
-                {
-                    player.AddChips(hand.Bet * 2);
-                }
+
+                player.AddChips(hand.Bet * 2);
             });
         }
         public void PayoutPlayerBlackjack(Player player, Hand hand)

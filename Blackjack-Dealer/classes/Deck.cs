@@ -9,12 +9,7 @@ namespace Blackjack_Dealer.classes
 {
     internal class Deck
     {
-        List<Card> Cards = new List<Card>();
-
-        public List<Card> GetCards()
-        {
-            return Cards;
-        }
+        public readonly List<Card> Cards = new List<Card>();
 
         public Deck()
         { 
@@ -26,14 +21,6 @@ namespace Blackjack_Dealer.classes
                     Cards.Add(card);
                 }
             }
-        }
-
-        public Card DrawCard()
-        {
-            Card card = Cards[0];
-            Cards.RemoveAt(0);
-
-            return card;
         }
 
         public override string ToString()

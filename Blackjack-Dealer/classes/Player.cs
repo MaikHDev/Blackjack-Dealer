@@ -20,6 +20,7 @@ namespace Blackjack_Dealer.classes
 
         public event EventHandler<HandEventHandler> HandHit;
         public event EventHandler<HandEventHandler> HandSplit;
+        public event EventHandler<HandEventHandler> HandSurrender;
 
         public bool PlaceBet(int bet)
         {
@@ -62,11 +63,19 @@ namespace Blackjack_Dealer.classes
 
         private void OnHandSplit(List<Hand> hands, Hand hand)
         {
-            HandHit?.Invoke(this, new HandEventHandler(hands, hand));
+            HandSplit?.Invoke(this, new HandEventHandler(Name, hands, hand));
         }
         public void Split(List<Hand> hands, Hand hand)
         {
             OnHandSplit(hands, hand);
+        }
+        private void OnHandSurrender(Player player, List<Hand> hands, Hand hand)
+        {
+            HandSurrender?.Invoke(this, new HandEventHandler(Name, player, hands, hand));
+        }
+        public void Surrender(Player player, List<Hand> hands, Hand hand)
+        {
+            OnHandSurrender(player, hands, hand);
         }
 
         public void Stand(Hand hand)
@@ -93,11 +102,20 @@ namespace Blackjack_Dealer.classes
             this.Hand = hand;
         }
 
-        public HandEventHandler(List<Hand> hands, Hand hand)
+        public HandEventHandler(string name, List<Hand> hands, Hand hand)
         {
+            this.Name = name;
             this.Hands = hands;
             this.Hand = hand;
         }
+        public HandEventHandler(string name, Player player, List<Hand> hands, Hand hand)
+        {
+            this.Player = player;
+            this.Name = name;
+            this.Hands = hands;
+            this.Hand = hand;
+        }
+        public readonly Player Player;
         public readonly Hand Hand;
         public readonly List<Hand> Hands;
         public readonly string Name;

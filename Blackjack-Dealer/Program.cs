@@ -23,7 +23,7 @@ namespace Blackjack_Dealer
 
             HouseRules rules = HouseRules.GetInstance();
 
-            Dealer dealer = Dealer.GetInstance("Bas");
+            Dealer dealer = Dealer.GetInstance("Carlos");
 
             dealer.Hand = new Hand();
 
@@ -34,8 +34,9 @@ namespace Blackjack_Dealer
             {
                 players.Add(new Player($"Player{i + 1}"));
                 players[i].Hands.Add(new Hand()); // For testing!
-                players[i].HandHit += DealerDealCard;
-                players[i].HandSplit += DealerSplitPlayerHand;
+                players[i].HandHit += PlayerHitHand;
+                players[i].HandSplit += PlayerSplitHand;
+                players[i].HandSurrender += PlayerSurrenderHand;
             }
 
             dealer.ShuffleShoe(shoe);
@@ -65,20 +66,43 @@ namespace Blackjack_Dealer
                     Console.WriteLine(string.Join(", ", dealer.Hand.Cards));
                 }
             }
-            
-            players[0].Hit(players[0].Hands[0]);
-            dealer.ClearHand(players[0].Hands, players[0].Hands[0]);
-
-            void DealerDealCard(object sender, HandEventHandler e)
+            while (players[0].Hands[0].Cards.Sum(card => card.Value) < 21 && players[0].Hands[0].HasStood == false)
             {
-                Console.WriteLine(e.Name);
-                Console.WriteLine(string.Join(", ", e.Hand.Cards));
-                dealer.DealCard(shoe, e.Hand, classes.Orientation.UP);
-                Console.WriteLine(string.Join(", ", e.Hand.Cards));
+                players[0].Hit(players[0].Hands[0]);
             }
-            void DealerSplitPlayerHand(object sender, HandEventHandler e)
+            //if (players[0].Hands[0].Cards[0].Value == players[0].Hands[0].Cards[1].Value)
+            //{
+            //    Console.WriteLine("player has split!");
+            //    players[0].Split(players[0].Hands, players[0].Hands[0]);
+            //}
+            //else
+            //{
+            //    players[0].Hit(players[0].Hands[0]);
+            //}
+
+            void PlayerHitHand(object sender, HandEventHandler e)
             {
+                Console.WriteLine($"Player {e.Name} has hit!");
+
+                Console.WriteLine(string.Join(", ", e.Hand.Cards) + $" {e.Hand.Cards.Sum(card => card.Value)}");
+                dealer.DealCard(shoe, e.Hand, classes.Orientation.UP);
+                Console.WriteLine(string.Join(", ", e.Hand.Cards) + $" {e.Hand.Cards.Sum(card => card.Value)}");
+            }
+            void PlayerSplitHand(object sender, HandEventHandler e)
+            {
+                Console.WriteLine($"Player {e.Name} has split his hand.");
+
+                Console.WriteLine(string.Join(", ", e.Hand.Cards));
                 dealer.SplitHand(shoe, e.Hands, e.Hand);
+                Console.WriteLine(string.Join(", ", e.Hands[0].Cards));
+                Console.WriteLine(string.Join(", ", e.Hands[1].Cards));
+            }
+            void PlayerSurrenderHand(object sender, HandEventHandler e)
+            {
+                int bet = e.Hand.Bet;
+                e.Hands.Remove(e.Hand);
+                e.Player.AddChips(bet / 2);
+                Console.WriteLine($"Player {e.Name} surrendered and got back {bet} chips.");
             }
         }
     }

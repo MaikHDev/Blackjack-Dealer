@@ -9,13 +9,13 @@ namespace Blackjack_Dealer.classes
 {
     internal class Shoe
     {
-        public List<Card> shoe { get; private set; } = new List<Card>();
+        public readonly List<Card> shoe = new List<Card>();
 
         public Shoe() 
         {
             for(int i = 0; i < HouseRules.GetInstance().ShoeSize; i++)
             {
-                shoe.AddRange(new Deck().GetCards());
+                shoe.AddRange(new Deck().Cards);
             }
         }
 

@@ -8,7 +8,7 @@ namespace Blackjack_Dealer.classes
 {
     internal class Hand
     {
-        List<Card> _cards = new List<Card>();
+        public List<Card> Cards { get; private set; } = new List<Card>();
 
         private int? bet;
 
@@ -24,14 +24,10 @@ namespace Blackjack_Dealer.classes
             }
         }
 
-        public List<Card> Cards { get { return _cards; } }
-
-        private bool doubledDown = false;
-
-        public bool DoubledDown { get { return doubledDown; } }
+        public bool DoubledDown { get; private set; } = false;
 
         private bool stood = false;
-        public bool hasStood
+        public bool HasStood
         {
             get { return stood; }
             set
@@ -46,26 +42,26 @@ namespace Blackjack_Dealer.classes
 
         public void StandHand()
         {
-            hasStood = true;
+            HasStood = true;
         }
 
         public bool DoubleDown()
         {
-            if (true == doubledDown)
+            if (true == DoubledDown)
             {
                 Console.WriteLine("Already doubled the bet of this hand, it is not possible to double again!");
                 return false;
             }
 
             this.bet = this.bet * 2;
-            doubledDown = true;
+            DoubledDown = true;
             stood = true;
             return true;
         }
 
         public void AddCardToHand(Card card)
         {
-            _cards.Add(card);
+            Cards.Add(card);
         }
     }
 }

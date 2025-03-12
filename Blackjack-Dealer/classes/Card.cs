@@ -41,21 +41,16 @@ namespace Blackjack_Dealer.classes
 
     internal class Card
     {
-        Suits suit;
-        Ranks rank;
-        Orientation orientation = Orientation.DOWN;
+        public Suits Suit { get; private set; }
+        public Ranks Rank { get; private set; }
+        public Orientation Orientation { get; set; } = Orientation.DOWN;
         public int Value { get; private set; }
         Image img;
 
-        public Suits Suit { get { return suit; } }
-        public Ranks Rank { get { return rank; } }
-        public Orientation Orientation { get { return orientation; } set { orientation = value; } }
-
-
         public Card(Ranks rank, Suits suit)
         {
-            this.suit = suit;
-            this.rank = rank;
+            this.Suit = suit;
+            this.Rank = rank;
             switch (rank)
             {
                 case Ranks.JACK:
@@ -86,7 +81,7 @@ namespace Blackjack_Dealer.classes
 
         public override string ToString()
         {
-            return orientation == Orientation.UP ? ToUpperCase(this.rank) + " of " + ToUpperCase(this.suit) : "Card is faced down!";
+            return Orientation == Orientation.UP ? ToUpperCase(this.Rank) + " of " + ToUpperCase(this.Suit) : "Card is faced down!";
         }
     }
 

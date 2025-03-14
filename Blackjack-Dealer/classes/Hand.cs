@@ -58,6 +58,16 @@ namespace Blackjack_Dealer.classes
             stood = true;
             return true;
         }
+        public bool Split()
+        {
+            if (Cards.Count == 2 && Cards[0].Value == Cards[1].Value)
+            {
+                return true;
+            }
+
+            Console.WriteLine("Not possible to split this hand!");
+            return false;
+        }
 
         public void AddCardToHand(Card card)
         {

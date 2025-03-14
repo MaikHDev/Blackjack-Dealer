@@ -67,7 +67,11 @@ namespace Blackjack_Dealer.classes
         }
         public void Split(List<Hand> hands, Hand hand)
         {
-            OnHandSplit(hands, hand);
+            if (hand.Split())
+            {
+                OnHandSplit(hands, hand);
+                Chips -= hand.Bet;
+            }
         }
         private void OnHandSurrender(Player player, List<Hand> hands, Hand hand)
         {
@@ -86,6 +90,7 @@ namespace Blackjack_Dealer.classes
         {
             if (hand.DoubleDown())
             {
+                Chips -= hand.Bet;
                 Hit(hand);
             }
         }

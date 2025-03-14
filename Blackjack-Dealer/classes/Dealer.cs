@@ -45,21 +45,19 @@ namespace Blackjack_Dealer.classes
 
         public void DealCard(Shoe shoe, Hand hand, Orientation orientation = Orientation.UP)
         {
-            hand.AddCardToHand(GiveSingleCard(shoe, orientation));
+            hand.AddCardToHand(DrawCard(shoe, orientation));
         }
 
         public void ClearHands(List<Hand> allPlayerHands)
         {
-            Hand = new Hand();
             allPlayerHands.Clear();
         }
         public void ClearHand(List<Hand> hands, Hand hand)
         {
-            Hand = new Hand();
             hands.Remove(hand);
         }
 
-        public Card GiveSingleCard(Shoe shoe, Orientation orientation = Orientation.UP)
+        public Card DrawCard(Shoe shoe, Orientation orientation = Orientation.UP)
         {
             var card = shoe.shoe[0];
             shoe.shoe.RemoveAt(0);
@@ -72,26 +70,27 @@ namespace Blackjack_Dealer.classes
             if (hand.Cards.Count == 2 && (hand.Cards[0].Value == hand.Cards[1].Value))
             {
                 int bet = hand.Bet;
+                int handIndex = hands.IndexOf(hand);
+                if (handIndex == -1)
+                {
+                    return;
+                }
+
                 hands.Remove(hand);
 
                 var newHands = new List<Hand>
                 {
-                    new Hand { Cards = { hand.Cards[0], GiveSingleCard(shoe) }, Bet = bet },
-                    new Hand { Cards = { hand.Cards[1], GiveSingleCard(shoe) }, Bet = bet }
+                    new Hand { Cards = { hand.Cards[0], DrawCard(shoe) }, Bet = bet },
+                    new Hand { Cards = { hand.Cards[1], DrawCard(shoe) }, Bet = bet }
                 };
 
-                hands.AddRange(newHands);
+                hands.InsertRange(handIndex, newHands);
             }
         }
 
-        public void PayoutPlayer(Player player)
-        {
-            player.Hands.ForEach(hand =>
-            {
-                var cards = hand.Cards;
-
-                player.AddChips(hand.Bet * 2);
-            });
+        public void PayoutPlayer(Player player, Hand hand, int amount)
+        { 
+            player.AddChips(hand.Bet * amount);
         }
         public void PayoutPlayerBlackjack(Player player, Hand hand)
         {

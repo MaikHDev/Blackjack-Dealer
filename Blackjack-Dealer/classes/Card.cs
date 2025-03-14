@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,12 +46,14 @@ namespace Blackjack_Dealer.classes
         public Ranks Rank { get; private set; }
         public Orientation Orientation { get; set; } = Orientation.DOWN;
         public int Value { get; private set; }
-        Image img;
+        public Image Img { get; private set; }
 
         public Card(Ranks rank, Suits suit)
         {
             this.Suit = suit;
             this.Rank = rank;
+            string directory = @"images\png-playing-cards\" + $"{rank.ToString().ToLower()}_of_{suit.ToString().ToLower()}.png";
+            Img = Image.FromFile(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\", directory));
             switch (rank)
             {
                 case Ranks.JACK:

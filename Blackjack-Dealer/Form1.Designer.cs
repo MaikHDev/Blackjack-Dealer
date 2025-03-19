@@ -36,7 +36,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(191, 106);
+            this.button1.Location = new System.Drawing.Point(976, 211);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(190, 71);
             this.button1.TabIndex = 0;
@@ -48,7 +48,7 @@
             // 
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.No;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(477, 93);
+            this.pictureBox1.Location = new System.Drawing.Point(1027, 12);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(95, 161);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -60,7 +60,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1290, 665);
+            this.ClientSize = new System.Drawing.Size(1178, 687);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button1);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;

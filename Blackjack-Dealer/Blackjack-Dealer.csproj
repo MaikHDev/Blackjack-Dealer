@@ -91,4 +91,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>rmdir "$(TargetDir)png-playing-cards\" /S</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>XCOPY "$(SolutionDir)Blackjack-Dealer\images\png-playing-cards" "$(TargetDir)png-playing-cards\" /Q /S /Y</PostBuildEvent>
+  </PropertyGroup>
 </Project>

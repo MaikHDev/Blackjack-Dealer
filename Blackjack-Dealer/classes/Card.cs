@@ -48,12 +48,11 @@ namespace Blackjack_Dealer.classes
         public int Value { get; private set; }
         public Image Img { get; private set; }
 
-        public Card(Ranks rank, Suits suit)
+        public Card(Ranks rank, Suits suit, string imageDir)
         {
             this.Suit = suit;
             this.Rank = rank;
-            string directory = @"images\png-playing-cards\" + $"{rank.ToString().ToLower()}_of_{suit.ToString().ToLower()}.png";
-            Img = Image.FromFile(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\", directory));
+            Img = Image.FromFile(imageDir);
             switch (rank)
             {
                 case Ranks.JACK:

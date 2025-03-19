@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,14 +14,31 @@ namespace Blackjack_Dealer.classes
         public readonly List<Card> Cards = new List<Card>();
 
         public Deck()
-        { 
-            foreach (Suits suit in Enum.GetValues(typeof(Suits)))
+        {
+            List<string> files = new List<string>();
+            string dir = @"png-playing-cards\";
+            files.AddRange(Directory.GetFiles(dir));
+            try
             {
-                foreach (Ranks rank in Enum.GetValues(typeof(Ranks)))
+
+
+                foreach (Suits suit in Enum.GetValues(typeof(Suits)))
                 {
-                    Card card = new Card(rank, suit);
-                    Cards.Add(card);
+                    foreach (Ranks rank in Enum.GetValues(typeof(Ranks)))
+                    {
+                        string fileName = $"{dir}{ToLowerCase(rank)}_of_{ToLowerCase(suit)}.png";
+                        string image = files.Find(file => file == fileName);
+                        if (image == null)
+                        {
+                            throw new Exception($"File does not exist in {dir}.");
+                        }
+                        Card card = new Card(rank, suit, image);
+                        Cards.Add(card);
+                    }
                 }
+            } catch(Exception e) 
+            {
+                Console.WriteLine(e.ToString());
             }
         }
 
@@ -34,6 +53,12 @@ namespace Blackjack_Dealer.classes
             }
 
             return result;
+        }
+
+        public string ToLowerCase(Enum item)
+        {
+            string upper = item.ToString().ToLower();
+            return upper;
         }
 
     }

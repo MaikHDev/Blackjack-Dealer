@@ -61,15 +61,15 @@ namespace Blackjack_Dealer.classes
             OnHandHit(hand);
         }
 
-        private void OnHandSplit(List<Hand> hands, Hand hand)
+        private void OnHandSplit(Hand hand)
         {
-            HandSplit?.Invoke(this, new HandEventHandler(Name, hands, hand));
+            HandSplit?.Invoke(this, new HandEventHandler(Name, Hands, hand));
         }
-        public void Split(List<Hand> hands, Hand hand)
+        public void Split(Hand hand)
         {
             if (hand.Split())
             {
-                OnHandSplit(hands, hand);
+                OnHandSplit(hand);
                 Chips -= hand.Bet;
             }
         }
